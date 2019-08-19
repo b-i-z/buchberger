@@ -1,0 +1,9 @@
+[package]
+name = "buchberger"
+version = "0.1.0"
+authors = ["mikit <mikihito0906@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+num-traits = "0.2.8"
+ordered-float = "1.0.2"
