@@ -3,6 +3,8 @@ name = "buchberger"
 version = "0.1.0"
 authors = ["mikit <mikihito0906@gmail.com>"]
 edition = "2018"
+license = "MIT"
+description = "Provides polynomial operation and buchberger's algorithm implementation"
 
 [dependencies]
 num-traits = "0.2.8"
