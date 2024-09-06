@@ -66,7 +66,7 @@ impl<'lt, F: Field + Debug + Display> Polynomial<'lt, F> {
 
     pub fn lc(&self) -> F {
         assert!(!self.is_zero());
-        self.terms[0].0
+        self.terms[0].0.clone()
     }
 
     pub fn s_polynomial(&self, other: &Self) -> Self {
@@ -106,7 +106,7 @@ impl<'lt, F: Field + Display> fmt::Display for Polynomial<'lt, F> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut first = true;
         for term in &self.terms {
-            if (-term.0).is_one() {
+            if (-term.0.clone()).is_one() {
                 write!(f, "-")?;
             } else if !term.0.is_one() || term.1.is_one() {
                 if first {
@@ -155,7 +155,7 @@ impl<'lt, F: Field + Debug + Display> Neg for Polynomial<'lt, F> {
     type Output = Self;
     fn neg(mut self) -> Self {
         for v in &mut self.terms {
-            v.0 = -v.0;
+            v.0 = -v.0.clone();
         }
         return self;
     }
@@ -193,7 +193,7 @@ impl<'lt, F: Field + Debug + Display> Mul<Self> for Polynomial<'lt, F> {
         let orig = std::mem::replace(&mut self.terms, Vec::<(F, Monomial<'lt, F>)>::new());
         for t1 in &orig {
             for t2 in &other.terms {
-                self.terms.push((t1.0 * t2.0, t1.1.clone() * &t2.1));
+                self.terms.push((t1.0.clone() * t2.0.clone(), t1.1.clone() * &t2.1));
             }
         }
         self.normalize();
@@ -205,7 +205,7 @@ impl<'lt, F: Field + Debug + Display> Mul<F> for Polynomial<'lt, F> {
     type Output = Self;
     fn mul(mut self, other: F) -> Self {
         for t in &mut self.terms {
-            t.0 *= other;
+            t.0 *= other.clone();
         }
         return self;
     }
@@ -253,7 +253,7 @@ impl<'lt, F: Field + Debug + Display> Div<F> for Polynomial<'lt, F> {
     type Output = Self;
     fn div(mut self, other: F) -> Self {
         for t in &mut self.terms {
-            t.0 /= other;
+            t.0 /= other.clone();
         }
         return self;
     }

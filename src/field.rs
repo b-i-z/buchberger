@@ -1,12 +1,10 @@
 use num_traits::{One, Zero};
-use ordered_float::NotNan;
 use std::cmp::Eq;
 use std::fmt;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
 pub trait Field:
-    Copy
-    + std::marker::Sized
+    Clone
     + Add<Output = Self>
     + AddAssign
     + Sub<Output = Self>
@@ -25,8 +23,7 @@ pub trait Field:
 #[derive(Copy, Clone, PartialEq, Eq)]
 pub struct F<T>(pub T)
 where
-    T: Copy
-        + std::marker::Sized
+    T: Clone
         + Add<Output = T>
         + Sub<Output = T>
         + Mul<Output = T>
@@ -37,8 +34,7 @@ where
 
 impl<T: fmt::Debug> fmt::Debug for F<T>
 where
-    T: Copy
-        + std::marker::Sized
+    T: Clone
         + Add<Output = T>
         + Sub<Output = T>
         + Mul<Output = T>
@@ -55,8 +51,7 @@ where
 
 impl<T: fmt::Display> fmt::Display for F<T>
 where
-    T: Copy
-        + std::marker::Sized
+    T:  Clone
         + Add<Output = T>
         + Sub<Output = T>
         + Mul<Output = T>
@@ -73,8 +68,7 @@ where
 
 impl<T> Add<Self> for F<T>
 where
-    T: Copy
-        + std::marker::Sized
+    T: Clone
         + Add<Output = T>
         + Sub<Output = T>
         + Mul<Output = T>
@@ -93,8 +87,7 @@ where
 
 impl<T> AddAssign for F<T>
 where
-    T: Copy
-        + std::marker::Sized
+    T: Clone
         + Add<Output = T>
         + Sub<Output = T>
         + Mul<Output = T>
@@ -104,14 +97,13 @@ where
         + One,
 {
     fn add_assign(&mut self, other: Self) {
-        *self = *self + other;
+        *self = self.clone() + other;
     }
 }
 
 impl<T> Sub<Self> for F<T>
 where
-    T: Copy
-        + std::marker::Sized
+    T: Clone
         + Add<Output = T>
         + Sub<Output = T>
         + Mul<Output = T>
@@ -130,8 +122,7 @@ where
 
 impl<T> SubAssign for F<T>
 where
-    T: Copy
-        + std::marker::Sized
+    T: Clone
         + Add<Output = T>
         + Sub<Output = T>
         + Mul<Output = T>
@@ -141,14 +132,13 @@ where
         + One,
 {
     fn sub_assign(&mut self, other: Self) {
-        *self = *self - other;
+        *self = self.clone() - other;
     }
 }
 
 impl<T> Neg for F<T>
 where
-    T: Copy
-        + std::marker::Sized
+    T: Clone
         + Add<Output = T>
         + Sub<Output = T>
         + Mul<Output = T>
@@ -165,8 +155,7 @@ where
 
 impl<T> Mul<Self> for F<T>
 where
-    T: Copy
-        + std::marker::Sized
+    T: Clone
         + Add<Output = T>
         + Sub<Output = T>
         + Mul<Output = T>
@@ -185,8 +174,7 @@ where
 
 impl<T> MulAssign for F<T>
 where
-    T: Copy
-        + std::marker::Sized
+    T: Clone
         + Add<Output = T>
         + Sub<Output = T>
         + Mul<Output = T>
@@ -196,14 +184,13 @@ where
         + One,
 {
     fn mul_assign(&mut self, other: Self) {
-        *self = *self * other;
+        *self = self.clone() * other;
     }
 }
 
 impl<T> Div<Self> for F<T>
 where
-    T: Copy
-        + std::marker::Sized
+    T: Clone
         + Add<Output = T>
         + Sub<Output = T>
         + Mul<Output = T>
@@ -222,8 +209,7 @@ where
 
 impl<T> DivAssign for F<T>
 where
-    T: Copy
-        + std::marker::Sized
+    T: Clone
         + Add<Output = T>
         + Sub<Output = T>
         + Mul<Output = T>
@@ -233,14 +219,13 @@ where
         + One,
 {
     fn div_assign(&mut self, other: Self) {
-        *self = *self / other;
+        *self = self.clone() / other;
     }
 }
 
 impl<T> Zero for F<T>
 where
-    T: Copy
-        + std::marker::Sized
+    T: Clone
         + Add<Output = T>
         + Sub<Output = T>
         + Mul<Output = T>
@@ -261,8 +246,7 @@ where
 
 impl<T> One for F<T>
 where
-    T: Copy
-        + std::marker::Sized
+    T: Clone
         + Add<Output = T>
         + Sub<Output = T>
         + Mul<Output = T>
@@ -276,5 +260,20 @@ where
     }
 }
 
-impl Field for F<NotNan<f32>> {}
-impl Field for F<NotNan<f64>> {}
+impl <T> Field for T
+where
+    T: Clone
+    + Add<Output = Self>
+    + AddAssign
+    + Sub<Output = Self>
+    + SubAssign
+    + Mul<Output = Self>
+    + MulAssign
+    + Div<Output = Self>
+    + DivAssign
+    + Neg<Output = Self>
+    + Eq
+    + Zero
+    + One
+{
+}
