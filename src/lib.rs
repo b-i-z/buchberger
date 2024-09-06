@@ -1,6 +1,3 @@
-extern crate num_traits;
-extern crate ordered_float;
-
 mod buchberger;
 mod field;
 mod monomial;
